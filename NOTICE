@@ -1,0 +1,21 @@
+MothWing
+Copyright (c) 2026 MothWing
+
+This product bundles or builds on the following third-party components.
+Full license texts and details are tracked in THIRD_PARTY_LICENSES.md.
+
+- Kokoro-82M (TTS model weights) — Apache License 2.0
+    https://huggingface.co/hexgrad/Kokoro-82M
+- KokoroSwift (MLX inference) — MIT License
+    https://github.com/mlalma/kokoro-ios
+- MisakiSwift (espeak-free English G2P) — Apache License 2.0
+    https://github.com/mlalma/MisakiSwift
+- MLXUtilsLibrary (.npz/.safetensors loading) — Apache License 2.0
+    https://github.com/mlalma/MLXUtilsLibrary
+- MLX / mlx-swift — MIT License
+    https://github.com/ml-explore/mlx-swift
+- ZIPFoundation — MIT License
+    https://github.com/weichsel/ZIPFoundation
+
+The English grapheme-to-phoneme path is intentionally espeak-free to avoid the
+GPLv3 obligations of espeak-ng on a commercial app (see SPIKE.md, Licensing).
