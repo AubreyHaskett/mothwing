@@ -1,0 +1,34 @@
+# XcodeGen manifest. Run `xcodegen generate` from the repo root to produce
+# MothWingSpike.xcodeproj, then open it in Xcode. See SPIKE.md for the full
+# procedure (and a manual fallback if you don't have xcodegen).
+name: MothWingSpike
+options:
+  bundleIdPrefix: com.mothwing.spike
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+
+packages:
+  MothWingSpike:
+    path: spike
+
+targets:
+  MothWingSpike:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: spike/App
+    dependencies:
+      - package: MothWingSpike
+        product: SpikeKit
+      - package: MothWingSpike
+        product: SpikeEngine
+    info:
+      path: spike/App/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mothwing.spike.app
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: 1
+        SWIFT_VERSION: "5.9"

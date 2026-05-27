@@ -1,0 +1,22 @@
+# Xcode / SwiftPM
+.build/
+DerivedData/
+*.xcodeproj
+*.xcworkspace
+!project.yml
+xcuserdata/
+.swiftpm/
+
+# Generated project (from xcodegen)
+MothWingSpike.xcodeproj/
+
+# Model weights + voices (large; fetched via scripts/download_models.sh)
+spike/Models/
+
+# Spike runtime output
+spike/Cache/
+*.m4a
+*.csv
+
+# macOS
+.DS_Store
