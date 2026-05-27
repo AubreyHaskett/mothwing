@@ -1,13 +1,18 @@
 import SwiftUI
 import AVFoundation
 import SpikeKit
+#if !targetEnvironment(simulator)
 import SpikeEngine
+#endif
 
 @MainActor
 final class SpikeModel: ObservableObject {
     enum EngineKind: String, CaseIterable, Identifiable {
         case stub = "Stub"
+        case apple = "Apple TTS"
+        #if !targetEnvironment(simulator)
         case kokoro = "Kokoro-MLX"
+        #endif
         var id: String { rawValue }
     }
 
@@ -33,11 +38,15 @@ final class SpikeModel: ObservableObject {
         switch engineKind {
         case .stub:
             return StubTTSEngine()
+        case .apple:
+            return AppleTTSEngine()
+        #if !targetEnvironment(simulator)
         case .kokoro:
             return KokoroTTSEngine(
                 modelPath: Self.resolve("kokoro-v1_0", "safetensors"),
                 voicesPath: Self.resolve("voices", "npz")
             )
+        #endif
         }
     }
 
@@ -98,10 +107,13 @@ final class SpikeModel: ObservableObject {
 
     private func play(url: URL) {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback)
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
-            player = try AVAudioPlayer(contentsOf: url)
-            player?.play()
+            let p = try AVAudioPlayer(contentsOf: url)
+            p.prepareToPlay()
+            p.volume = 1.0
+            self.player = p
+            p.play()
         } catch {
             status = "Playback error: \(error)"
         }

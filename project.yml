@@ -19,6 +19,9 @@ targets:
     deploymentTarget: "18.0"
     sources:
       - path: spike/App
+      - path: spike/Models
+        type: folder
+        buildPhase: resources
     dependencies:
       - package: MothWingSpike
         product: SpikeKit
@@ -32,3 +35,28 @@ targets:
         GENERATE_INFOPLIST_FILE: NO
         TARGETED_DEVICE_FAMILY: 1
         SWIFT_VERSION: "5.0"
+        DEVELOPMENT_TEAM: G75F4V32M9
+        CODE_SIGN_IDENTITY: "Apple Development"
+        CODE_SIGN_STYLE: Automatic
+
+  MothWingSpike-Sim:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: spike/App
+      - path: spike/Models
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - package: MothWingSpike
+        product: SpikeKit
+    info:
+      path: spike/App/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.mothwing.spike.sim
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: 1
+        SWIFT_VERSION: "5.0"
+        CODE_SIGNING_ALLOWED: "NO"

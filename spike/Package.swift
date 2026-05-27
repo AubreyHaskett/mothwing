@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 import PackageDescription
 
 // MothWing engine spike. SpikeKit is dependency-free (compiles + tests on macOS).
@@ -15,9 +15,9 @@ let package = Package(
         .library(name: "SpikeEngine", targets: ["SpikeEngine"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/mlalma/kokoro-ios.git", exact: "1.0.9"),
-        .package(url: "https://github.com/ml-explore/mlx-swift", from: "0.29.1"),
-        .package(url: "https://github.com/mlalma/MLXUtilsLibrary.git", from: "0.0.6"),
+        .package(url: "https://github.com/mlalma/kokoro-ios.git", exact: "1.0.11"),
+        .package(url: "https://github.com/ml-explore/mlx-swift", exact: "0.30.2"),
+        .package(url: "https://github.com/mlalma/MLXUtilsLibrary.git", exact: "0.0.6"),
     ],
     targets: [
         .target(name: "SpikeKit"),
