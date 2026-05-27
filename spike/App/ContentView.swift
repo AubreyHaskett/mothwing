@@ -11,6 +11,14 @@ final class SpikeModel: ObservableObject {
         var id: String { rawValue }
     }
 
+    /// Common Kokoro v1.0 voices. 'a' prefix = American, 'b' = British.
+    static let voiceOptions = [
+        "af_heart", "af_bella", "af_nicole",
+        "am_adam", "am_michael",
+        "bf_emma", "bf_isabella",
+        "bm_george", "bm_lewis",
+    ]
+
     @Published var text = BenchmarkCorpus.text
     @Published var engineKind: EngineKind = .stub
     @Published var voice = "af_heart"
@@ -21,20 +29,25 @@ final class SpikeModel: ObservableObject {
 
     private var player: AVAudioPlayer?
 
-    var voices: [String] { makeEngine().availableVoices }
-
     private func makeEngine() -> TTSEngine {
         switch engineKind {
         case .stub:
             return StubTTSEngine()
         case .kokoro:
-            let models = Self.modelsDirectory()
             return KokoroTTSEngine(
-                modelPath: models.appendingPathComponent("kokoro.mlx"),
-                voicesPath: models.appendingPathComponent("voices-v1.0.bin"),
-                voices: ["af_heart", "am_adam", "bf_emma", "bm_george"]
+                modelPath: Self.resolve("kokoro-v1_0", "safetensors"),
+                voicesPath: Self.resolve("voices", "npz")
             )
         }
+    }
+
+    /// Prefer a file bundled in the app target; fall back to Documents/Models so
+    /// you can push files onto a device without rebuilding.
+    private static func resolve(_ name: String, _ ext: String) -> URL {
+        if let bundled = Bundle.main.url(forResource: name, withExtension: ext) {
+            return bundled
+        }
+        return modelsDirectory().appendingPathComponent("\(name).\(ext)")
     }
 
     func runBenchmark() {
@@ -116,7 +129,7 @@ struct ContentView: View {
                         ForEach(SpikeModel.EngineKind.allCases) { Text($0.rawValue).tag($0) }
                     }
                     Picker("Voice", selection: $model.voice) {
-                        ForEach(model.voices, id: \.self) { Text($0).tag($0) }
+                        ForEach(SpikeModel.voiceOptions, id: \.self) { Text($0).tag($0) }
                     }
                 }
 

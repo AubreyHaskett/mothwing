@@ -59,13 +59,13 @@ public struct BenchmarkReport: Sendable {
         let half = sentences.count / 2
         let firstHalf = Array(sentences[..<half])
         let secondHalf = Array(sentences[half...])
-        let a = meanRTF(of: firstHalf)
-        let b = meanRTF(of: secondHalf)
+        let a = groupRTF(firstHalf)
+        let b = groupRTF(secondHalf)
         guard a > 0 else { return 1 }
         return b / a
     }
 
-    private func meanRTF(of group: [SentenceMetric]) -> Double {
+    private func groupRTF(_ group: [SentenceMetric]) -> Double {
         let audio = group.reduce(0) { $0 + $1.audioDuration }
         let gen = group.reduce(0) { $0 + $1.generationTime }
         guard audio > 0 else { return .infinity }

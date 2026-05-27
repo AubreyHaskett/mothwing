@@ -24,8 +24,6 @@ public struct StubTTSEngine: TTSEngine {
     }
 
     public func synthesize(text: String, voice: String) async throws -> SynthesisResult {
-        guard availableVoices.contains(voice) else { throw TTSEngineError.unknownVoice(voice) }
-
         let audioSeconds = max(0.2, Double(text.count) * secondsPerChar)
         let frames = Int(audioSeconds * Double(sampleRate))
 

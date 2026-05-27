@@ -31,4 +31,4 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.mothwing.spike.app
         GENERATE_INFOPLIST_FILE: NO
         TARGETED_DEVICE_FAMILY: 1
-        SWIFT_VERSION: "5.9"
+        SWIFT_VERSION: "5.0"

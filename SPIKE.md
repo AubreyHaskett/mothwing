@@ -11,17 +11,19 @@ time on an iPhone 13 Pro (A15). This spike confirms it on the devices we
 actually care about and measures the things a single warm-up number hides
 (cold start, thermal throttling, battery).
 
-## Why this is a scaffold, not finished code
+## Status: written, not yet compiled
 
-It was generated in a Linux container with no macOS/Xcode/MLX, so it could not
-be compiled or run here. Split:
+Generated in a Linux container with no macOS/Xcode/MLX, so nothing here has been
+compiled or run. The Kokoro wiring is **complete** (no stubs) — coded against the
+real KokoroSwift 1.0.9 API verified from source — but expect to shake out minor
+issues on a real Mac. Layout:
 
-- **`spike/Sources/SpikeKit`** — dependency-free harness (engine protocol,
-  benchmark runner, metrics/CSV, sentence index, AAC cache, stub engine).
-  Builds + unit-tests on your Mac with `swift test`.
-- **`spike/Sources/SpikeEngine`** — the real Kokoro wiring via `KokoroSwift`.
-  Has **two `TODO(verify)` integration points** (see step 4) that need the
-  KokoroTestApp to finalize.
+- **`spike/Sources/SpikeKit`** — harness with no external code dependencies
+  (engine protocol, benchmark runner, metrics/CSV, sentence index, AAC cache,
+  stub engine). Unit-tested with `swift test`. (SPM still resolves the whole
+  package graph, so that command needs network + a Swift 6.2 toolchain.)
+- **`spike/Sources/SpikeEngine`** — real Kokoro wiring via `KokoroSwift` (MLX),
+  voices via `MLXUtilsLibrary` `NpyzReader`. Pinned to KokoroSwift 1.0.9.
 - **`spike/App`** — SwiftUI harness assembled into an app by `project.yml`.
 
 ## Stack
@@ -29,11 +31,21 @@ be compiled or run here. Split:
 | Layer | Choice | License |
 |---|---|---|
 | UI / shell | Swift + SwiftUI, iOS 18+ | — |
-| Inference | KokoroSwift (MLX) | MIT |
+| Inference | KokoroSwift (MLX) 1.0.9 | MIT |
 | G2P | misaki via KokoroSwift (`g2p: .misaki`), espeak-free | Apache-2.0 |
-| Model | Kokoro-82M v1.0 (MLX) | Apache-2.0 |
+| Voices loader | MLXUtilsLibrary `NpyzReader` | Apache-2.0 |
+| Model | Kokoro-82M v1.0, `kokoro-v1_0.safetensors` | Apache-2.0 |
 
 iOS 18 floor still covers every A13–A15 device (iPhone 11 / SE2 and up).
+
+**Toolchain:** KokoroSwift and its deps ship Swift 6.2 manifests, so you need a
+recent Xcode (Swift 6.2 toolchain) to resolve/build this package — including
+`swift test`, which resolves the full graph even though it only compiles SpikeKit.
+
+**Model size:** the MLX path uses the **full-precision `kokoro-v1_0.safetensors`
+(~600 MB)**, not the ~86 MB quantized ONNX the product spec assumed. That's fine
+for answering the speed question; shrinking the download (quantization) is a
+separate follow-up before shipping.
 
 ## Run procedure
 
@@ -56,28 +68,27 @@ package, link products `SpikeKit` + `SpikeEngine`, and add `spike/App/*.swift`
 to the app target. Set `UIBackgroundModes = [audio]`.
 
 ### 3. Resolve dependencies and confirm the license graph
-In Xcode, resolve packages. Then verify the resolved graph does **not** pull in
-espeak-ng (see THIRD_PARTY_LICENSES.md). Pin `kokoro-ios` and `mlx-swift` to
-specific commits/tags in `spike/Package.swift` before recording numbers.
+In Xcode, resolve packages. KokoroSwift is pinned to 1.0.9 in `spike/Package.swift`.
+Confirm the resolved graph does **not** link espeak-ng (see THIRD_PARTY_LICENSES.md;
+KokoroSwift 1.0.9 has its eSpeak dependency commented out).
 
-### 4. Wire the two Kokoro integration points
-In `spike/Sources/SpikeEngine/KokoroTTSEngine.swift`, using the KokoroTestApp
-from the kokoro-ios repo as reference:
-- `loadVoiceEmbedding(named:from:)` — load each voice's style vector (`MLXArray`)
-  from `voices-v1.0.bin`.
-- `floatSamples(from:)` — convert `generateAudio(...)`'s return value to
-  `[Float]` at 24 kHz (adjust the assumed sample rate if it differs).
-
-### 5. Get the model
+### 4. Get the model + voices
 ```
-MODEL_URL=...  VOICES_URL=...  ./scripts/download_models.sh
+./scripts/download_models.sh        # needs git-lfs; clones KokoroTestApp Resources
 ```
-See the script header for candidate sources. Files land in `spike/Models/`
-(gitignored). The app reads `Models/kokoro.mlx` + `Models/voices-v1.0.bin` from
-the app's Documents dir — copy them onto the device/simulator, or adjust the
-paths in `ContentView.swift`.
+This fetches `kokoro-v1_0.safetensors` (~600 MB, Git LFS) and `voices.npz` into
+`spike/Models/` (gitignored). To self-host instead:
+`MODEL_URL=... VOICES_URL=... ./scripts/download_models.sh`.
 
-### 6. Benchmark on hardware (the actual experiment)
+Then make the app find them, either:
+- **Bundle (simplest):** drag both files into the `MothWingSpike` target in Xcode
+  ("Copy items if needed", added to the app's Resources). `Bundle.main` resolves
+  them automatically. Do **not** commit them (they're gitignored).
+- **Documents:** push both into the app's `Documents/Models/` on the device.
+
+The app's file resolver prefers the bundle and falls back to `Documents/Models`.
+
+### 5. Benchmark on hardware (the actual experiment)
 Run on a **physical A13–A15 device** (release build). Select the **Kokoro**
 engine and tap **Run Benchmark**. Export the CSV. Then:
 - Repeat warm (run again without relaunch) vs cold (relaunch first).
