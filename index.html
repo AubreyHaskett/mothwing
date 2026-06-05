@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MothWing — A private, on-device audiobook reader</title>
+  <meta name="description" content="Bring your own text — EPUB, PDF, DOCX — and listen with a neural voice that runs entirely on your phone. No accounts, no servers, nothing uploaded.">
+  <meta property="og:title" content="MothWing">
+  <meta property="og:description" content="Bring your own text — EPUB, PDF, DOCX — and listen with a neural voice that runs entirely on your phone. No accounts, no servers, nothing uploaded.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mothwing.app">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,400..500&display=swap">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #15100A;
+      color: #D9CCB0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    .glow {
+      position: fixed;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(198, 138, 46, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      width: 100%;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-top: clamp(80px, 14vh, 160px);
+    }
+
+    .hero-image {
+      width: clamp(200px, 40vw, 280px);
+      height: auto;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    h1 {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 350;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      color: #E8DCC0;
+    }
+
+    .tagline {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(16px, 2.5vw, 19px);
+      font-weight: 400;
+      color: #B0A284;
+      line-height: 1.6;
+      max-width: 480px;
+      margin-bottom: 48px;
+    }
+
+    .features {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .feature {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: #7A6B53;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature::before {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #E5A857;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #E5A857;
+      border: 1px solid rgba(229, 168, 87, 0.2);
+      padding: 8px 20px;
+      border-radius: 100px;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: auto;
+      padding: 40px 24px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: #4A3E2E;
+    }
+
+    @media (max-width: 480px) {
+      .features {
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+  <main>
+    <img src="assets/moth_and_moon.png" alt="A moth and moon" class="hero-image">
+    <h1>Your words, your device.</h1>
+    <p class="tagline">
+      Bring your own text — EPUB, PDF, DOCX, whatever — and MothWing
+      reads it aloud with a neural voice that runs entirely on your phone.
+      No accounts, no servers, nothing uploaded.
+    </p>
+    <div class="features">
+      <span class="feature">Fully on-device</span>
+      <span class="feature">Follow-along highlighting</span>
+      <span class="feature">No account required</span>
+      <span class="feature">No subscriptions</span>
+    </div>
+    <div class="cta-group">
+      <span class="badge">Coming soon to iOS &amp; Android</span>
+    </div>
+  </main>
+  <footer>
+    &copy; 2025 MothWing
+  </footer>
+</body>
+</html>
