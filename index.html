@@ -250,8 +250,9 @@
     // Clip Lottie to orbit segment (frames 0-180 of 360), then start
     const player = document.getElementById('moth-lottie');
     player.addEventListener('ready', function () {
+      this.stop();
       this.setSegment(0, 180);
-      this.play();
+      this.goToAndPlay(0, true);
     });
   </script>
   <script>
