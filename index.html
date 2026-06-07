@@ -29,6 +29,31 @@
       overflow-x: hidden;
     }
 
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-bar img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .top-bar span {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: #B0A284;
+      letter-spacing: -0.01em;
+    }
+
     .glow {
       position: fixed;
       top: -40%;
@@ -164,6 +189,15 @@
       font-size: 11px;
       letter-spacing: 0.04em;
       color: #4A3E2E;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    footer img {
+      width: 18px;
+      height: 18px;
+      opacity: 0.5;
     }
 
     @media (max-width: 480px) {
@@ -174,6 +208,10 @@
   </style>
 </head>
 <body>
+  <div class="top-bar">
+    <img src="assets/moth.png" alt="MothWing logo">
+    <span>MothWing</span>
+  </div>
   <div class="glow"></div>
   <main>
     <div class="hero-container">
@@ -205,7 +243,7 @@
     </div>
   </main>
   <footer>
-    &copy; 2026 MothWing
+    <img src="assets/moth.png" alt="MothWing">&copy; 2026 MothWing
   </footer>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
   <script>
