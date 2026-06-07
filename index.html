@@ -54,11 +54,35 @@
       margin-top: clamp(80px, 14vh, 160px);
     }
 
-    .hero-image {
-      width: clamp(200px, 40vw, 280px);
-      height: auto;
+    .hero-container {
+      position: relative;
+      width: clamp(240px, 45vw, 320px);
+      height: clamp(240px, 45vw, 320px);
       margin-bottom: 40px;
-      opacity: 0.9;
+    }
+
+    .hero-sky {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(15, 26, 46, 0.92) 0%,
+        rgba(22, 36, 64, 0.8) 45%,
+        rgba(27, 45, 74, 0.45) 75%,
+        rgba(30, 51, 85, 0) 100%
+      );
+    }
+
+    .hero-stars {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-lottie {
+      position: relative;
+      width: 100%;
+      height: 100%;
     }
 
     h1 {
@@ -152,7 +176,19 @@
 <body>
   <div class="glow"></div>
   <main>
-    <img src="assets/moth_and_moon.png" alt="A moth and moon" class="hero-image">
+    <div class="hero-container">
+      <div class="hero-sky"></div>
+      <canvas class="hero-stars" id="stars"></canvas>
+      <lottie-player
+        class="hero-lottie"
+        id="moth-lottie"
+        src="assets/moth_animation.json"
+        background="transparent"
+        speed="1"
+        loop
+        autoplay
+      ></lottie-player>
+    </div>
     <h1>Your words, your device.</h1>
     <p class="tagline">
       Bring your own text — EPUB, PDF, DOCX, whatever — pick from
@@ -172,5 +208,73 @@
   <footer>
     &copy; 2026 MothWing
   </footer>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
+  <script>
+    // Clip Lottie to orbit segment (frames 0-180 of 360)
+    document.getElementById('moth-lottie').addEventListener('ready', function () {
+      this.setSegment(0, 180);
+    });
+  </script>
+  <script>
+    // Twinkling stars on the night-sky canvas
+    (function () {
+      const canvas = document.getElementById('stars');
+      const ctx = canvas.getContext('2d');
+      let w, h, cx, cy, r;
+
+      const stars = [];
+      const COUNT = 14;
+
+      function resize() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        w = rect.width;
+        h = rect.height;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        cx = w / 2;
+        cy = h / 2;
+        r = Math.min(w, h) / 2;
+      }
+
+      function init() {
+        resize();
+        stars.length = 0;
+        for (let i = 0; i < COUNT; i++) {
+          // Place stars in a ring between 35% and 92% of the radius
+          const angle = Math.random() * Math.PI * 2;
+          const dist = r * (0.35 + Math.random() * 0.57);
+          stars.push({
+            x: cx + Math.cos(angle) * dist,
+            y: cy + Math.sin(angle) * dist,
+            size: 0.8 + Math.random() * 1.2,
+            baseAlpha: 0.3 + Math.random() * 0.5,
+            speed: 0.8 + Math.random() * 1.5,
+            phase: Math.random() * Math.PI * 2,
+          });
+        }
+      }
+
+      function draw(t) {
+        ctx.clearRect(0, 0, w, h);
+        for (const s of stars) {
+          const twinkle = 0.5 + 0.5 * Math.sin(t * 0.001 * s.speed + s.phase);
+          const alpha = s.baseAlpha * (0.3 + 0.7 * twinkle);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,255,255,' + alpha + ')';
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      init();
+      window.addEventListener('resize', init);
+      requestAnimationFrame(draw);
+    })();
+  </script>
 </body>
 </html>
