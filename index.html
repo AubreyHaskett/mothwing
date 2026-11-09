@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MothWing: a private audiobook reader that runs on your phone</title>
-  <meta name="description" content="Open an EPUB, PDF or DOCX, pick one of 10 voices, and MothWing reads it to you. It all runs on your phone, so nothing gets uploaded and there's no account to make.">
+  <meta name="description" content="Open an EPUB, PDF or DOCX and pick one of 10 voices. It runs on your phone, so nothing is uploaded, and there's no account or subscription.">
   <meta property="og:title" content="MothWing">
-  <meta property="og:description" content="Open an EPUB, PDF or DOCX, pick one of 10 voices, and MothWing reads it to you. It all runs on your phone, so nothing gets uploaded and there's no account to make.">
+  <meta property="og:description" content="Open an EPUB, PDF or DOCX and pick one of 10 voices. It runs on your phone, so nothing is uploaded, and there's no account or subscription.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mothwing.app">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
@@ -25,65 +25,59 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       overflow-x: hidden;
     }
 
     .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 10;
-      padding: 20px 24px;
+      padding: 24px 32px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .top-bar img {
-      width: 32px;
-      height: 32px;
-    }
+    .top-bar img { width: 28px; height: 28px; }
 
     .top-bar span {
       font-family: 'Newsreader', Georgia, serif;
-      font-size: 16px;
-      font-weight: 400;
-      color: #B0A284;
-      letter-spacing: -0.01em;
-    }
-
-    .glow {
-      position: fixed;
-      top: -40%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, rgba(198, 138, 46, 0.04) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+      font-size: 18px;
+      color: #D9CCB0;
     }
 
     main {
-      position: relative;
-      z-index: 1;
-      max-width: 640px;
+      flex: 1;
       width: 100%;
-      padding: 0 24px;
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 48px 32px 64px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      text-align: center;
-      margin-top: clamp(80px, 14vh, 160px);
+      gap: 64px;
+    }
+
+    .text { flex: 1; }
+
+    h1 {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: clamp(30px, 5vw, 42px);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      color: #E8DCC0;
+    }
+
+    .text p {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #B8AA8C;
+      margin-bottom: 16px;
+      max-width: 440px;
     }
 
     .hero-container {
       position: relative;
-      width: clamp(240px, 45vw, 320px);
-      height: clamp(240px, 45vw, 320px);
-      margin-bottom: 40px;
+      flex: none;
+      width: clamp(220px, 32vw, 300px);
+      height: clamp(220px, 32vw, 300px);
     }
 
     .hero-sky {
@@ -99,111 +93,17 @@
       );
     }
 
-    .hero-stars {
-      position: absolute;
-      inset: 0;
-    }
-
-    .hero-lottie {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    h1 {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: clamp(32px, 5vw, 44px);
-      font-weight: 350;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      color: #E8DCC0;
-    }
-
-    .tagline {
-      font-family: 'Newsreader', Georgia, serif;
-      font-style: italic;
-      font-size: clamp(16px, 2.5vw, 19px);
-      font-weight: 400;
-      color: #B0A284;
-      line-height: 1.6;
-      max-width: 480px;
-      margin-bottom: 48px;
-    }
-
-    .features {
-      display: flex;
-      gap: 32px;
-      margin-bottom: 56px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .feature {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-      color: #7A6B53;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .feature::before {
-      content: '';
-      display: block;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #E5A857;
-    }
-
-    .cta-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .badge {
-      display: inline-block;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #E5A857;
-      border: 1px solid rgba(229, 168, 87, 0.2);
-      padding: 8px 20px;
-      border-radius: 100px;
-    }
+    .hero-stars { position: absolute; inset: 0; }
+    .hero-lottie { position: relative; width: 100%; height: 100%; }
 
     footer {
-      position: relative;
-      z-index: 1;
-      margin-top: auto;
-      padding: 40px 24px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      color: #4A3E2E;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      padding: 24px 32px;
+      font-size: 14px;
+      color: #6B5E48;
     }
 
-    footer img {
-      width: 18px;
-      height: 18px;
-      opacity: 0.5;
-    }
-
-    @media (max-width: 480px) {
-      .features {
-        gap: 16px;
-      }
+    @media (max-width: 700px) {
+      main { flex-direction: column-reverse; align-items: flex-start; gap: 32px; padding-top: 16px; }
     }
   </style>
 </head>
@@ -212,8 +112,12 @@
     <img src="assets/moth.png" alt="MothWing logo">
     <span>MothWing</span>
   </div>
-  <div class="glow"></div>
   <main>
+    <div class="text">
+      <h1>MothWing reads your books aloud.</h1>
+      <p>Open an EPUB, PDF or DOCX and pick one of 10 voices. It runs on your phone, so nothing is uploaded, and there's no account or subscription.</p>
+      <p>The text highlights as it reads so you can follow along. iOS and Android versions are coming.</p>
+    </div>
     <div class="hero-container">
       <div class="hero-sky"></div>
       <canvas class="hero-stars" id="stars"></canvas>
@@ -227,23 +131,8 @@
         autoplay
       ></lottie-player>
     </div>
-    <h1>Your books, read aloud.</h1>
-    <p class="tagline">
-      Open an EPUB, PDF or DOCX, pick one of 10 voices, and MothWing reads it to you. It all runs on your phone, so nothing gets uploaded and there's no account to make.
-    </p>
-    <div class="features">
-      <span class="feature">Runs on your phone</span>
-      <span class="feature">Highlights as it reads</span>
-      <span class="feature">No account</span>
-      <span class="feature">No subscription</span>
-    </div>
-    <div class="cta-group">
-      <span class="badge">Coming soon to iOS &amp; Android</span>
-    </div>
   </main>
-  <footer>
-    <img src="assets/moth.png" alt="MothWing">&copy; 2026 MothWing
-  </footer>
+  <footer>&copy; 2026 MothWing</footer>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
   <script>
     // Clip Lottie to orbit segment (frames 0-180 of 360)
